@@ -72,7 +72,7 @@ VOLUME ["/sys/fs/cgroup"]
 # display
 EXPOSE 5678
 
-COPY start.sh /
-COPY copy-bin-lib.sh /
+COPY --from=build /root/gpu-manager/build/start.sh /
+COPY --from=build /root/gpu-manager/build/copy-bin-lib.sh /
 
 CMD ["/start.sh"]
