@@ -1,9 +1,5 @@
 FROM nvidia/cuda:10.1-devel-centos7 as build
 
-RUN git clone https://github.com/tkestack/gpu-manager.git \
-  && tar czf gpu-manager-source.tar.gz --transform 's,^,/gpu-manager-'${version}'/,' gpu-manager
-RUN mkdir -p go/build
-
 ARG version='1.0.4'
 ARG commit='1.0.4'
 
@@ -20,6 +16,10 @@ ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
 RUN mkdir -p /root/rpmbuild/{SPECS,SOURCES}
+
+RUN git clone https://github.com/tkestack/gpu-manager.git \
+  && tar czf gpu-manager-source.tar.gz --transform 's,^,/gpu-manager-'${version}'/,' gpu-manager
+RUN mkdir -p go/build
 
 COPY gpu-manager/build/gpu-manager.spec /root/rpmbuild/SPECS
 COPY gpu-manager-source.tar.gz /root/rpmbuild/SOURCES
