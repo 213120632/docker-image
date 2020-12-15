@@ -38,8 +38,8 @@ RUN rpmbuild -bb --quiet \
 
 FROM tkestack/vcuda:1.0.1
 
-ARG version
-ARG commit
+ARG version=1.0.4
+ARG commit=1.0.4
 
 COPY --from=build /root/rpmbuild/RPMS/x86_64/gpu-manager-${version}-${commit}.el7.x86_64.rpm /tmp
 
