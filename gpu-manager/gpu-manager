@@ -1,7 +1,7 @@
 FROM nvidia/cuda:10.1-devel-centos7 as build
 
-ARG version='1.0.4'
-ARG commit='1.0.4'
+ARG version=1.0.4
+ARG commit=1.0.4
 
 RUN yum install -y rpm-build make
 
@@ -21,8 +21,9 @@ RUN git clone https://github.com/tkestack/gpu-manager.git \
   && tar czf gpu-manager-source.tar.gz --transform 's,^,/gpu-manager-'${version}'/,' gpu-manager
 RUN mkdir -p go/build
 
-COPY gpu-manager/build/gpu-manager.spec /root/rpmbuild/SPECS
-COPY gpu-manager-source.tar.gz /root/rpmbuild/SOURCES
+RUN cp gpu-manager/build/gpu-manager.spec /root/rpmbuild/SPECS && cp gpu-manager-source.tar.gz /root/rpmbuild/SOURCES
+#COPY gpu-manager/build/gpu-manager.spec /root/rpmbuild/SPECS
+#COPY gpu-manager-source.tar.gz /root/rpmbuild/SOURCES
 
 RUN echo '%_topdir /root/rpmbuild' > /root/.rpmmacros \
   && echo '%__os_install_post %{nil}' >> /root/.rpmmacros \
