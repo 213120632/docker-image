@@ -17,12 +17,13 @@ ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
 RUN mkdir -p /root/rpmbuild/{SPECS,SOURCES}
 
-RUN git clone https://github.com/tkestack/gpu-manager.git \
-  && cd gpu-manager
-RUN tar czf gpu-manager-source.tar.gz --transform 's,^,/gpu-manager-'${version}'/,' $(find . -mindepth 1 -maxdepth 1 -not \(                \( -path ./go \) -prune        \))
-RUN mkdir -p go/build
+WORKDIR /root
+RUN git clone https://github.com/tkestack/gpu-manager.git && cd /root/gpu-manager && \
+  tar czf /root/gpu-manager-source.tar.gz --transform 's,^,/gpu-manager-'${version}'/,' \
+  $(find . -mindepth 1 -maxdepth 1 -not \(                \( -path ./go \) -prune        \))
 
-RUN cp gpu-manager/build/gpu-manager.spec /root/rpmbuild/SPECS && cp gpu-manager-source.tar.gz /root/rpmbuild/SOURCES
+RUN cp /root/gpu-manager/build/gpu-manager.spec /root/rpmbuild/SPECS && \
+  cp /root/gpu-manager-source.tar.gz /root/rpmbuild/SOURCES
 #COPY gpu-manager/build/gpu-manager.spec /root/rpmbuild/SPECS
 #COPY gpu-manager-source.tar.gz /root/rpmbuild/SOURCES
 
