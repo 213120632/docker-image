@@ -21,11 +21,10 @@ RUN apt-get update && \
     curl \
     cmake \
     git \
-    python3-pip \
     && rm -rf /var/lib/apt/lists/* \
     && cd /tmp \
-#    && curl -O https://bootstrap.pypa.io/get-pip.py \
-#    && python3 get-pip.py
+    && curl -O https://bootstrap.pypa.io/get-pip.py \
+    && python3 get-pip.py
 
 RUN python3 -m venv /home/venv
 
