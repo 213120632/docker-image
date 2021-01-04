@@ -19,6 +19,7 @@ RUN apt-get update &&  apt-get install  -y \
     python3-venv \
     # openjdk-11-jre-headless \
     curl \
+    cmake \
     && rm -rf /var/lib/apt/lists/* \
     && cd /tmp \
     && curl -O https://bootstrap.pypa.io/get-pip.py \
