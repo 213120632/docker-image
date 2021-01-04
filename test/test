@@ -20,17 +20,26 @@ RUN apt-get update &&  apt-get install  -y \
     # openjdk-11-jre-headless \
     curl \
     cmake \
-    python3-pip \
     && rm -rf /var/lib/apt/lists/* \
     && cd /tmp \
+    && curl -O https://bootstrap.pypa.io/get-pip.py \
+    && python3 get-pip.py
 
+RUN echo $(pip3 -V) && pip3 list
+RUN pip3 install numpy && pip3 list
 
 RUN python3 -m venv /home/venv
 
+RUN echo $(pip3 -V) && pip3 list && ls /home/venv/lib/python3.6/site-packages/
+
 ENV PATH="/home/venv/bin:$PATH"
 
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+RUN echo $(pip3 -V) && pip3 list && ls /home/venv/lib/python3.6/site-packages/
+
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
+    && update-alternatives --install /usr/local/bin/pip pip /usr/local/bin/pip3 1
 
 # This is only useful for cuda env
 RUN export USE_CUDA=1
-RUN pip3 install scikit-build && pip3 install opencv-python
+RUN pip3 install pandas
+RUN echo $(pip3 -V) && pip3 list && ls /home/venv/lib/python3.6/site-packages/
