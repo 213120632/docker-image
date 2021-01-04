@@ -39,5 +39,6 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
 # This is only useful for cuda env
 RUN export USE_CUDA=1
 
-RUN pip install --upgrade pip opencv-python
+RUN pip install --upgrade pip
+RUN pip install opencv-python
 RUN echo $(pip3 -V) && pip3 list && ls /home/venv/lib/python3.6/site-packages/
