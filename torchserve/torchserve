@@ -53,7 +53,8 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.7 1 \
 # This is only useful for cuda env
 RUN export USE_CUDA=1
 
-RUN pip install scikit-build  && pip install cmake
+#RUN pip install scikit-build  && pip install cmake
+RUN git clone https://github.com/open-mmlab/mmcv.git && cd mmcv
 
 ARG CUDA_VERSION=""
 
@@ -63,15 +64,17 @@ RUN TORCH_VER=$(curl --silent --location https://pypi.org/pypi/torch/json | pyth
         # Install CUDA version specific binary when CUDA version is specified as a build arg
         if [ "$CUDA_VERSION" ]; then \
             pip install --no-cache-dir torch==$TORCH_VER+$CUDA_VERSION torchvision==$TORCH_VISION_VER+$CUDA_VERSION -f https://download.pytorch.org/whl/torch_stable.html; \
-            pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/$CUDA_VERSION/$TORCH_VER/index.html; \
+#            pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/$CUDA_VERSION/$TORCH_VER/index.html; \
+            MMCV_WITH_OPS=1 pip install -e .; \
         # Install the binary with the latest CUDA version support
         else \
             pip install --no-cache-dir torch torchvision; \
+            pip install -e .; \
         fi \
     # Install the CPU binary
     else \
         pip install --no-cache-dir torch==$TORCH_VER+cpu torchvision==$TORCH_VISION_VER+cpu -f https://download.pytorch.org/whl/torch_stable.html; \
-        pip install mmcv; \
+        pip install -e .; \
     fi
 RUN pip install --no-cache-dir torchtext torchserve torch-model-archiver
 
