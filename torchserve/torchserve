@@ -52,7 +52,7 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
 # This is only useful for cuda env
 RUN export USE_CUDA=1
 
-RUN pip install scikit-build
+RUN pip install scikit-build  && pip install cmake
 
 ARG CUDA_VERSION=""
 
@@ -77,7 +77,7 @@ RUN pip install --no-cache-dir torchtext torchserve torch-model-archiver
 # 安装mmcls
 RUN git clone https://github.com/open-mmlab/mmclassification.git \
     && cd mmclassification \
-    pip install -e .
+    && pip install -e .
 
 # Final image for production
 FROM ${BASE_IMAGE} AS runtime-image
