@@ -10,6 +10,10 @@ FROM ${BASE_IMAGE} AS compile-image
 ARG BASE_IMAGE=ubuntu:18.04
 ENV PYTHONUNBUFFERED TRUE
 
+RUN  apt-get update && apt-get install -y build-essential \
+    cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev \
+    libjpeg-dev libpng-dev libtiff-dev libatlas-base-dev gfortran
+
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
     ca-certificates \
@@ -34,10 +38,6 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
 
 # This is only useful for cuda env
 RUN export USE_CUDA=1
-
-RUN  apt-get update && apt-get install -y build-essential \
-    cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev \
-    libjpeg-dev libpng-dev libtiff-dev libatlas-base-dev gfortran
 
 RUN mkdir /opencv && cd /opencv && git clone https://github.com/opencv/opencv.git \
     && git clone https://github.com/opencv/opencv_contrib.git && cd opencv && mkdir build && cd build \
