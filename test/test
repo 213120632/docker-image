@@ -25,9 +25,6 @@ RUN apt-get update &&  apt-get install  -y \
     && curl -O https://bootstrap.pypa.io/get-pip.py \
     && python3 get-pip.py
 
-RUN echo $(pip3 -V) && pip3 list
-RUN pip3 install numpy && pip3 list
-
 RUN python3 -m venv /home/venv
 
 RUN echo $(pip3 -V) && pip3 list && ls /home/venv/lib/python3.6/site-packages/
@@ -41,5 +38,6 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
 
 # This is only useful for cuda env
 RUN export USE_CUDA=1
-RUN pip3 install pandas
+
+RUN pip install --upgrade pip opencv-python
 RUN echo $(pip3 -V) && pip3 list && ls /home/venv/lib/python3.6/site-packages/
