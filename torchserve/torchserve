@@ -20,7 +20,8 @@ RUN apt-get update && \
     openjdk-11-jre-headless \
     curl \
     cmake \
-    python3-pip \
+    git \
+#    python3-pip \
     && rm -rf /var/lib/apt/lists/* \
     && cd /tmp \
 #    && curl -O https://bootstrap.pypa.io/get-pip.py \
@@ -29,6 +30,8 @@ RUN apt-get update && \
 RUN python3 -m venv /home/venv
 
 ENV PATH="/home/venv/bin:$PATH"
+
+RUN python3 -m pip install --upgrade pip setuptools wheel
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
@@ -44,8 +47,6 @@ RUN export USE_CUDA=1
 #RUN mkdir /opencv && cd /opencv && git clone https://github.com/opencv/opencv.git \
 #    && git clone https://github.com/opencv/opencv_contrib.git && cd opencv && mkdir build && cd build \
 #    && cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=/usr/local .. PYTHON3_EXECUTABLE=/usr/bin/python3
-
-RUN python3 -m pip install --upgrade pip setuptools wheel
 
 ARG CUDA_VERSION=""
 
