@@ -89,14 +89,14 @@ RUN useradd -m model-server \
     && mkdir -p /home/model-server/tmp
 
 RUN git clone https://github.com/pytorch/serve.git && cd serve/docker \
-    && cp dockerd-entrypoint.sh /usr/local/bin/dockerd-entrypoint.sh
+    && cp dockerd-entrypoint.sh /usr/local/bin/dockerd-entrypoint.sh \
+    && cp config.properties /home/model-server/config.properties
 #COPY dockerd-entrypoint.sh /usr/local/bin/dockerd-entrypoint.sh
 
 RUN chmod +x /usr/local/bin/dockerd-entrypoint.sh \
     && chown -R model-server /home/model-server \
     && chown -R model-server /home/venv
 
-RUN cp config.properties /home/model-server/config.properties
 #COPY config.properties /home/model-server/config.properties
 RUN mkdir /home/model-server/model-store && chown -R model-server /home/model-server/model-store
 
