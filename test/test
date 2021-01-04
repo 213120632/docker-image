@@ -34,3 +34,4 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
 
 # This is only useful for cuda env
 RUN export USE_CUDA=1
+RUN pip install scikit-build && pip install opencv-python
