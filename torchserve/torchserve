@@ -33,7 +33,7 @@ RUN apt-get update && \
     ca-certificates \
     g++ \
     python3.7 \
-    python3-venv \
+    python3.7-venv \
     openjdk-11-jre-headless \
     curl \
     && rm -rf /var/lib/apt/lists/* \
