@@ -53,7 +53,8 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.7 1 \
 # This is only useful for cuda env
 RUN export USE_CUDA=1
 
-RUN pip install opencv-python scikit-build 
+RUN pip install scikit-build 
+RUN pip install opencv-python
 RUN pip install mmcv
 #RUN git clone https://github.com/open-mmlab/mmcv.git && cd mmcv
 
