@@ -21,7 +21,7 @@ RUN apt-get update && \
     curl \
     cmake \
     git \
-#    python3-pip \
+    python3-pip \
     && rm -rf /var/lib/apt/lists/* \
     && cd /tmp \
 #    && curl -O https://bootstrap.pypa.io/get-pip.py \
