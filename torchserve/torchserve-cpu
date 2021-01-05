@@ -4,7 +4,8 @@ FROM ${BASE_IMAGE} AS compile-image
 ARG BASE_IMAGE=ubuntu:18.04
 ENV PYTHONUNBUFFERED TRUE
 
-RUN apt-get update && \
+RUN --mount=type=cache,id=apt-dev,target=/var/cache/apt \
+    apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
     ca-certificates \
     g++ \
@@ -44,36 +45,39 @@ RUN TORCH_VER=$(curl --silent --location https://pypi.org/pypi/torch/json | pyth
     else \
         pip install --no-cache-dir torch==$TORCH_VER+cpu torchvision==$TORCH_VISION_VER+cpu -f https://download.pytorch.org/whl/torch_stable.html; \
     fi
-RUN pip install --no-cache-dir captum torchtext torchserve torch-model-archiver
+RUN pip install --no-cache-dir torchtext torchserve torch-model-archiver
 
 # Final image for production
 FROM ${BASE_IMAGE} AS runtime-image
 
 ENV PYTHONUNBUFFERED TRUE
 
-RUN apt-get update && \
+RUN --mount=type=cache,target=/var/cache/apt \
+    apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
     python3 \
     python3-distutils \
     python3-dev \
     openjdk-11-jre-headless \
     build-essential \
+    git \
     && rm -rf /var/lib/apt/lists/* \
     && cd /tmp
 
-RUN useradd -m model-server \
-    && mkdir -p /home/model-server/tmp
-
-COPY --chown=model-server --from=compile-image /home/venv /home/venv
+COPY --from=compile-image /home/venv /home/venv
 
 ENV PATH="/home/venv/bin:$PATH"
+
+RUN useradd -m model-server \
+    && mkdir -p /home/model-server/tmp
 
 RUN git clone https://github.com/pytorch/serve.git && cd serve/docker \
     && cp dockerd-entrypoint.sh /usr/local/bin/dockerd-entrypoint.sh \
     && cp config.properties /home/model-server/config.properties
 
 RUN chmod +x /usr/local/bin/dockerd-entrypoint.sh \
-    && chown -R model-server /home/model-server
+    && chown -R model-server /home/model-server \
+    && chown -R model-server /home/venv
 
 RUN mkdir /home/model-server/model-store && chown -R model-server /home/model-server/model-store
 
