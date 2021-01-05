@@ -43,7 +43,7 @@ RUN TORCH_VER=$(curl --silent --location https://pypi.org/pypi/torch/json | pyth
         # Install CUDA version specific binary when CUDA version is specified as a build arg
         if [ "$CUDA_VERSION" ]; then \
             pip install --no-cache-dir torch==$TORCH_VER+$CUDA_VERSION torchvision==$TORCH_VISION_VER+$CUDA_VERSION -f https://download.pytorch.org/whl/torch_stable.html; \
-            pip install --no-cache-dir mmcv-full -f https://download.openmmlab.com/mmcv/dist/$CUDA_VERSION/$TORCH_VER/index.html; \
+            pip install --no-cache-dir mmcv-full -f https://download.openmmlab.com/mmcv/dist/$CUDA_VERSION/torch$TORCH_VER/index.html; \
         # Install the binary with the latest CUDA version support
         else \
             pip install --no-cache-dir torch torchvision mmcv; \
