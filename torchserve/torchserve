@@ -82,6 +82,7 @@ RUN apt-get update && \
     openjdk-11-jre-headless \
     build-essential \
     git \
+    libgl1-mesa-glx \
     && rm -rf /var/lib/apt/lists/* \
     && cd /tmp
 
