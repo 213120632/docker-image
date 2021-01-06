@@ -35,7 +35,7 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
 RUN export USE_CUDA=1
 RUN pip install --upgrade pip setuptools wheel
 ARG CUDA_VERSION=cu101
-ARG CUDA_VER = cu101
+ARG CUDA_VER=cu101
 
 RUN echo $CUDA_VERSION && echo $BASE_IMAGE && echo $CUDA_VER
 
