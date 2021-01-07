@@ -38,7 +38,9 @@ ARG CUDA_VER=cu101
 ARG TORCH_VER=1.7.0
 ARG TORCH_VISION_VER=0.8.1
 
-RUN if echo "$BASE_IMAGE" | grep -q "cuda:"; then \
+RUN TORCH_VER=$(curl --silent --location https://pypi.org/pypi/torch/json | python -c "import sys, json, pkg_resources; releases = json.load(sys.stdin)['releases']; print(sorted(releases, key=pkg_resources.parse_version)[-1])") && \
+    TORCH_VISION_VER=$(curl --silent --location https://pypi.org/pypi/torchvision/json | python -c "import sys, json, pkg_resources; releases = json.load(sys.stdin)['releases']; print(sorted(releases, key=pkg_resources.parse_version)[-1])") && \
+    if echo "$BASE_IMAGE" | grep -q "cuda:"; then \
         # Install CUDA version specific binary when CUDA version is specified as a build arg
         if [ "$CUDA_VER" ]; then \
             pip install --no-cache-dir torch==$TORCH_VER+$CUDA_VER torchvision==$TORCH_VISION_VER+$CUDA_VER -f https://download.pytorch.org/whl/torch_stable.html; \
