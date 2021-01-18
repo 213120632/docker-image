@@ -1,0 +1,11 @@
+FROM tensorflow/tensorflow:2.1.0-gpu
+
+# RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3 get-pip.py
+
+RUN apt-get update && apt-get install -y cmake git python3-pip
+
+RUN python3 -m pip install --upgrade pip -i https://pypi.douban.com/simple
+
+RUN pip3 install pillow scipy flask tensorflow-gpu==2.1.0 keras==2.3.1 scikit-learn imageio scikit-build opencv-python tqdm -i https://pypi.douban.com/simple
+RUN pip3 install git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI -i https://pypi.douban.com/simple
+RUN pip3 install --upgrade git+https://github.com/tensorpack/tensorpack.git -i https://pypi.douban.com/simple
