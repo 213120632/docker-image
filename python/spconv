@@ -1,2 +1,2 @@
-From python:3.7-lite
-RUN apt-get update && apt install git && git clone https://github.com/traveller59/spconv.git --recursive
+From python:3.7-slim
+RUN apt-get update && apt-get install git && git clone https://github.com/traveller59/spconv.git --recursive
