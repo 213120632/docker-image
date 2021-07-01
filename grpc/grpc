@@ -1,2 +1,2 @@
 FROM python:3.6-slim
-RUN apt-get update && apt-install git && git clone https://github.com/grpc/grpc.git --recurse && git checkout -b v1.37.1
+RUN apt-get update && apt-get install -y git && git clone https://github.com/grpc/grpc.git --recurse && cd grpc && git checkout -b v1.37.1
